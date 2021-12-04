@@ -1,48 +1,9 @@
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { IRootState } from "../modules";
-import { css } from "@emotion/css";
-import { ICardFace, getCardList, searchActions } from "../modules/searchModule";
 import ReactCardFlip from "react-card-flip";
-
+import { css } from "@emotion/css";
+import { ICardFace } from "../../modules/searchModule";
 import Slider from "react-slick";
 
-const Card_list: React.FC = () => {
-    const dispatch = useDispatch();
-    const searchState = useSelector((state: IRootState) => state.search);
-    const [timeoutId, setTimeoutId] = useState(0)
-
-    useEffect(() => {
-        clearTimeout(timeoutId)
-
-        setTimeoutId(
-            Number(setTimeout(async () => {
-                await dispatch(getCardList(searchState.searchConditions));
-                dispatch(searchActions.initFlipState(searchState.cardList.length))
-            }, 500))
-        )
-    }, [searchState.searchConditions])
-
-    const clickFlipButton = (index: number) => {
-        dispatch(searchActions.changeFlipState(index))
-    }
-
-    return (
-        <div>
-            {searchState.cardList.map((card, index) => {
-                if (card.cardFaces?.length !== 0) {
-                    switch (card.layout) {
-                        case "normal": return CreateCardLayout(card.cardFaces[0])
-                        case "split": return CreateSplitLayout(card.cardFaces)
-                        case "double": return CreateDoubleLayout(card.cardFaces, index, searchState.flipState[index], clickFlipButton)
-                    }
-                }
-            })}
-        </div>
-    )
-}
-
-const CreateCardLayout = (cardInfo: ICardFace) => {
+export const CreateCardLayout = (cardInfo: ICardFace) => {
     const cardStyle = css`
         display: grid;
         width: calc(29vw - 10px);
@@ -104,7 +65,7 @@ const CreateCardLayout = (cardInfo: ICardFace) => {
     );
 }
 
-const CreateDoubleLayout = (cardFaces: ICardFace[], index: number, flipState: boolean, clickFlipButton: (index: number) => void) => {
+export const CreateDoubleLayout = (cardFaces: ICardFace[], index: number, flipState: boolean, clickFlipButton: (index: number) => void) => {
 
     return (
         <>
@@ -119,7 +80,7 @@ const CreateDoubleLayout = (cardFaces: ICardFace[], index: number, flipState: bo
     );
 }
 
-const CreateSplitLayout = (cardFaces: ICardFace[]) => {
+export const CreateSplitLayout = (cardFaces: ICardFace[]) => {
     const settings = {
         dots: true,
         infinite: true,
@@ -140,5 +101,3 @@ const CreateSplitLayout = (cardFaces: ICardFace[]) => {
     )
 
 }
-
-export default Card_list;

@@ -53,7 +53,7 @@ const GetCardList = async (searchConditions: ISearchConditions, lang: string) =>
                             color: item.card_faces[0].colors,
                             text: item.card_faces[0].printed_text,
                             textEN: item.card_faces[0].oracle_text,
-                            image: item.card_faces[0].image_uris?.small
+                            image: item.image_uris?.small
                         },
                         {
                             name: item.card_faces[1].printed_name,
@@ -62,7 +62,7 @@ const GetCardList = async (searchConditions: ISearchConditions, lang: string) =>
                             color: item.card_faces[1].colors,
                             text: item.card_faces[1].printed_text,
                             textEN: item.card_faces[1].oracle_text,
-                            image: item.card_faces[1].image_uris?.small
+                            image: item.image_uris?.small
                         }]
                     }
                     break;
