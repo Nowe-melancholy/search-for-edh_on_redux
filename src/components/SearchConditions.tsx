@@ -9,13 +9,18 @@ import { searchActions } from "../modules/searchModule";
 
 Modal.setAppElement('#root')
 
-const Search_conditions = () => {
+const SearchConditions = () => {
   const dispatch = useDispatch();
   const searchState = useSelector((state: IRootState) => state.search);
 
   const [modalCardTypeIsOpen, setModalCardTypeIsOpen] = useState(false);
 
   const handleCardNameChange = (e: any) => dispatch(searchActions.setSearchCardName(e.target.value));
+
+  const handleColorChange = (e: any) => {
+    if (e.target.checked) dispatch(searchActions.addSearchColor(e.target.value))
+    else dispatch(searchActions.deleteSearchColor(e.target.value))
+  }
 
   const handleIdColorChange = (e: any) => {
     if (e.target.checked) dispatch(searchActions.addSearchIdColor(e.target.value))
@@ -30,7 +35,7 @@ const Search_conditions = () => {
   const searchStyle = css`
     display: grid;
     grid-auto-rows: auto;
-    grid-template-columns: 20% 80%;
+    grid-template-columns: 10% 90%;
     
     @media screen and (max-width: 1000px) {
       grid-auto-columns: auto;
@@ -38,6 +43,10 @@ const Search_conditions = () => {
       width: calc(93vw - 10px);
     }
   `;
+
+  const searchItem = css`
+    padding: .25rem .25rem .25rem .5rem;
+  `
 
   const modal = css`
     position: absolute;
@@ -55,10 +64,20 @@ const Search_conditions = () => {
   return (
     <div className={searchStyle}>
       <div>カード名</div>
-      <div><input type="search" onChange={e => handleCardNameChange(e)} /></div>
+      <div className={searchItem}><input type="search" onChange={e => handleCardNameChange(e)} /></div>
+
+      <div>色</div>
+      <div className={searchItem}>
+        <input type="checkbox" value="W" onChange={e => handleColorChange(e)}></input>白
+        <input type="checkbox" value="U" onChange={e => handleColorChange(e)}></input>青
+        <input type="checkbox" value="B" onChange={e => handleColorChange(e)}></input>黒
+        <input type="checkbox" value="R" onChange={e => handleColorChange(e)}></input>赤
+        <input type="checkbox" value="G" onChange={e => handleColorChange(e)}></input>緑
+        <input type="checkbox" value="C" onChange={e => handleColorChange(e)}></input>無色
+      </div>
 
       <div>固有色</div>
-      <div>
+      <div className={searchItem}>
         <input type="checkbox" value="W" onChange={e => handleIdColorChange(e)}></input>白
         <input type="checkbox" value="U" onChange={e => handleIdColorChange(e)}></input>青
         <input type="checkbox" value="B" onChange={e => handleIdColorChange(e)}></input>黒
@@ -68,7 +87,7 @@ const Search_conditions = () => {
       </div>
 
       <div>カードタイプ</div>
-      <div>
+      <div className={searchItem}>
         <button onClick={() => setModalCardTypeIsOpen(true)}>別画面で選択</button>
         <Modal isOpen={modalCardTypeIsOpen} className={modal}>
           <CardTypeConditions
@@ -106,4 +125,4 @@ const CardTypeConditions = (props: any) => {
   )
 }
 
-export default Search_conditions;
+export default SearchConditions;

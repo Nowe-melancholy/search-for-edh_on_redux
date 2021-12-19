@@ -15,10 +15,12 @@ const GetCardList = async (searchConditions: ISearchConditions, lang: string) =>
         }
     }
 
-    let res = await fetch(search_URI + '+lang:' + lang);
+    const res = await fetch(search_URI + '+lang:' + lang)
+
     if (res.status === 200) {
         let json = await res.json();
         resultCount = json.total_cards
+
         cardList = await json.data.map((item: any) => {
             switch (item.layout) {
                 case "normal":
@@ -35,10 +37,27 @@ const GetCardList = async (searchConditions: ISearchConditions, lang: string) =>
                             text: item.printed_text,
                             textEN: item.oracle_text,
                             image: item.image_uris?.small
-                        }
-                            , {}]
-                    }
-                    break;
+                        },
+                        {}]
+                    };
+
+                case "saga":
+                    return {
+                        layout: "saga",
+                        oracle_id: item.oracle_id,
+                        idColor: item.color_identity,
+                        cmc: item.cmc,
+                        cardFaces: [{
+                            name: item.printed_name,
+                            name_en: item.name,
+                            mana_cost: item.mana_cost,
+                            color: item.colors,
+                            text: item.printed_text,
+                            textEN: item.oracle_text,
+                            image: item.image_uris?.small
+                        },
+                        {}]
+                    };
 
                 case "split":
                     return {
@@ -64,8 +83,7 @@ const GetCardList = async (searchConditions: ISearchConditions, lang: string) =>
                             textEN: item.card_faces[1].oracle_text,
                             image: item.image_uris?.small
                         }]
-                    }
-                    break;
+                    };
 
                 default:
                     return {
@@ -123,6 +141,11 @@ const CreateURI = (searchConditions: ISearchConditions) => {
     if (searchConditions.id_color.length !== 0) {
         search_URI += '+id>='
         searchConditions.id_color.forEach(idColor => search_URI += idColor)
+    }
+
+    if (searchConditions.color.length !== 0) {
+        search_URI += '+c>='
+        searchConditions.color.forEach(color => search_URI += color)
     }
 
     return search_URI

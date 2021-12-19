@@ -2,6 +2,7 @@ import ReactCardFlip from "react-card-flip";
 import { css } from "@emotion/css";
 import { ICardFace } from "../../modules/searchModule";
 import Slider from "react-slick";
+import React from "react";
 
 export const CreateCardLayout = (cardInfo: ICardFace) => {
     const cardStyle = css`
@@ -60,7 +61,9 @@ export const CreateCardLayout = (cardInfo: ICardFace) => {
                 }
 
             </div>
-            <img src={cardInfo.image} />
+            <div>
+                <img src={cardInfo.image} />
+            </div>
         </>
     );
 }
@@ -81,23 +84,37 @@ export const CreateDoubleLayout = (cardFaces: ICardFace[], index: number, flipSt
 }
 
 export const CreateSplitLayout = (cardFaces: ICardFace[]) => {
+    const sliderStyle = css`
+        .slick-prev:before,
+        .slick-next:before {
+            color: black;
+        }
+        .slick-prev {
+            left: 25px;
+        }
+        .slick-next {
+            right: 25px;
+        }
+        `;
+
     const settings = {
-        dots: true,
+        dots: false,
         infinite: true,
         speed: 500,
         slidesToShow: 1,
-        slidesToScroll: 1
+        slidesToScroll: 1,
+        arrows: true,
     };
 
     return (
-        <Slider {...settings}>
+        <Slider {...settings} className={sliderStyle}>
             <div>
                 {CreateCardLayout(cardFaces[0])}
             </div>
             <div>
                 {CreateCardLayout(cardFaces[1])}
             </div>
-        </Slider>
+        </Slider >
     )
 
 }

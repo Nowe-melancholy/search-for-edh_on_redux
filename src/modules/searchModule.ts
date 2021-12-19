@@ -61,22 +61,22 @@ export const getCardList = createAsyncThunk(
         const data_ja = await GetCardList(searchConditions, "ja")
         const data_en = await GetCardList(searchConditions, "en")
 
-        let card_list: ICard[] = data_ja.cardList
+        let cardList: ICard[] = data_ja.cardList
         let oracleIdSet = new Set();
-        card_list.forEach(card => oracleIdSet.add(card.oracle_id))
+        await cardList.forEach(card => oracleIdSet.add(card.oracle_id))
 
-        data_en.cardList.forEach(card => {
+        await data_en.cardList.forEach(card => {
             if (!oracleIdSet.has(card.oracle_id)) {
-                card_list.push(card)
+                cardList.push(card)
             }
         });
 
         const result_count = data_en.resultCount || data_ja.resultCount
 
-        card_list.sort(compareCMC)
+        await cardList.sort(compareCMC)
 
         return {
-            card_list,
+            cardList,
             result_count
         }
     }
@@ -92,6 +92,14 @@ const searchModule = createSlice({
     reducers: {
         setSearchCardName: (state: IState, action: PayloadAction<string>) => {
             state.searchConditions.card_name = action.payload;
+        },
+
+        addSearchColor: (state: IState, action: PayloadAction<string>) => {
+            state.searchConditions.color.push(action.payload);
+        },
+        deleteSearchColor: (state: IState, action: PayloadAction<string>) => {
+            const index: number = state.searchConditions.id_color.indexOf(action.payload)
+            state.searchConditions.color.splice(index, 1);
         },
 
         addSearchIdColor: (state: IState, action: PayloadAction<string>) => {
@@ -121,7 +129,7 @@ const searchModule = createSlice({
         builder.addCase(getCardList.fulfilled, (state, action) => {
             state.isLoading = false
 
-            state.cardList = action!.payload!.card_list
+            state.cardList = action!.payload!.cardList
             state.resultCount = action!.payload!.result_count
         })
 

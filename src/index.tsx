@@ -10,7 +10,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import Header from "./components/Header";
 import CardList from "./components/CardList/CardList";
-import Search_conditions from "./components/Search_conditions";
+import SearchConditions from "./components/SearchConditions";
 import ResultCount from "./components/ResultCount"
 
 const store = setupStore();
@@ -44,7 +44,7 @@ const App: React.FC = () => {
         <div className={headerStyle}><Header /></div>
 
         <div className={mainStyle}>
-          <Search_conditions />
+          <SearchConditions />
           <ResultCount />
           <CardList />
         </div>
