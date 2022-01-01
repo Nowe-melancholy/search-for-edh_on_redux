@@ -39,7 +39,6 @@ const CardList: React.FC = () => {
                 if (card.cardFaces?.length !== 0) {
                     switch (card.layout) {
                         case "normal": return CreateCardLayout(card.cardFaces[0])
-                        case "saga": return CreateCardLayout(card.cardFaces[0])
                         case "split": return CreateSplitLayout(card.cardFaces)
                         case "double": return CreateDoubleLayout(card.cardFaces, index, searchState.flipState[index], clickFlipButton)
                     }

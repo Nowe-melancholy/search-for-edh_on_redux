@@ -23,42 +23,6 @@ const GetCardList = async (searchConditions: ISearchConditions, lang: string) =>
 
         cardList = await json.data.map((item: any) => {
             switch (item.layout) {
-                case "normal":
-                    return {
-                        layout: "normal",
-                        oracle_id: item.oracle_id,
-                        idColor: item.color_identity,
-                        cmc: item.cmc,
-                        cardFaces: [{
-                            name: item.printed_name,
-                            name_en: item.name,
-                            mana_cost: item.mana_cost,
-                            color: item.colors,
-                            text: item.printed_text,
-                            textEN: item.oracle_text,
-                            image: item.image_uris?.small
-                        },
-                        {}]
-                    };
-
-                case "saga":
-                    return {
-                        layout: "saga",
-                        oracle_id: item.oracle_id,
-                        idColor: item.color_identity,
-                        cmc: item.cmc,
-                        cardFaces: [{
-                            name: item.printed_name,
-                            name_en: item.name,
-                            mana_cost: item.mana_cost,
-                            color: item.colors,
-                            text: item.printed_text,
-                            textEN: item.oracle_text,
-                            image: item.image_uris?.small
-                        },
-                        {}]
-                    };
-
                 case "split":
                     return {
                         layout: "split",
@@ -85,7 +49,7 @@ const GetCardList = async (searchConditions: ISearchConditions, lang: string) =>
                         }]
                     };
 
-                default:
+                case "transform":
                     return {
                         layout: "double",
                         oracle_id: item.oracle_id,
@@ -110,6 +74,51 @@ const GetCardList = async (searchConditions: ISearchConditions, lang: string) =>
                             image: item.card_faces[1].image_uris?.small
                         }]
                     }
+
+                case "adventure":
+                    return {
+                        layout: "double",
+                        oracle_id: item.oracle_id,
+                        idColor: item.color_identity,
+                        cmc: item.cmc,
+                        cardFaces: [{
+                            name: item.card_faces[0].printed_name,
+                            name_en: item.card_faces[0].name,
+                            mana_cost: item.card_faces[0].mana_cost,
+                            color: item.card_faces[0].colors,
+                            text: item.card_faces[0].printed_text,
+                            textEN: item.card_faces[0].oracle_text,
+                            image: item.card_faces[0].image_uris?.small
+                        },
+                        {
+                            name: item.card_faces[1].printed_name,
+                            name_en: item.card_faces[1].name,
+                            mana_cost: item.card_faces[1].mana_cost,
+                            color: item.card_faces[1].colors,
+                            text: item.card_faces[1].printed_text,
+                            textEN: item.card_faces[1].oracle_text,
+                            image: item.card_faces[1].image_uris?.small
+                        }]
+                    }
+
+                default:
+                    return {
+                        layout: "normal",
+                        oracle_id: item.oracle_id,
+                        idColor: item.color_identity,
+                        cmc: item.cmc,
+                        cardFaces: [{
+                            name: item.printed_name,
+                            name_en: item.name,
+                            mana_cost: item.mana_cost,
+                            color: item.colors,
+                            text: item.printed_text,
+                            textEN: item.oracle_text,
+                            image: item.image_uris?.small
+                        },
+                        {}]
+                    };
+
 
             }
         });
